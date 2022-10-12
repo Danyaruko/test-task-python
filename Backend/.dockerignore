@@ -1,0 +1,4 @@
+.idea/
+testBackend/
+*.pyc
+.env

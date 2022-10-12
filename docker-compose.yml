@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+
+    environment:
+      - POSTGRES_DB=testtask
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Danyanyaa15
+    container_name: testtask_db
+    ports:
+      - 54320:5432
+
+  backend:
+    build:
+      context: ./Backend
+    volumes:
+      - .:/usr/src/backend
+    environment:
+      - DJANGO_SECRET_KEY = django-insecure-z1xp5c1l!68%qi2t)xf&_zsb5cxqfsbopeq%tos+pvtta*x@wk
+      - DB_HOST = db
+      - DB_PORT = 5432
+      - DB_NAME = testtask
+      - DB_USERNAME = postgres
+      - DB_PASSWORD = Danyanyaa15
+    ports:
+      - 8000:8000
+
+    command: bash -c "
+      cd Backend && cd test_backend
+      && python manage.py migrate
+      && python manage.py runserver 0.0.0.0:8000
+      "
+    container_name: testtask_backend
+    depends_on:
+      - db
